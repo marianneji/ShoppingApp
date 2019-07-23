@@ -15,7 +15,8 @@ class ViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         navigationItem.leftBarButtonItem = UIBarButtonItem(barButtonSystemItem: .refresh, target: self, action: #selector(startShoppingList))
-        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItemList))
+        navigationItem.rightBarButtonItems = [UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addItemList)), UIBarButtonItem(barButtonSystemItem: .action, target: self, action: #selector(shareShoppingList))]
+        
         
         
     }
@@ -53,6 +54,13 @@ class ViewController: UITableViewController {
         let cell = tableView.dequeueReusableCell(withIdentifier: "item", for: indexPath)
         cell.textLabel?.text = shoppingList[indexPath.row].capitalized
         return cell
+    }
+    
+    @objc func shareShoppingList() {
+        let list = shoppingList.joined(separator: "\n")
+        let av = UIActivityViewController(activityItems: [list], applicationActivities: [])
+        av.popoverPresentationController?.barButtonItem = navigationItem.rightBarButtonItem
+        present(av, animated: true)
     }
     
     
